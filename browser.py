@@ -1,6 +1,4 @@
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from config.secrets import COURSE_URL
 
 
 class Browser:
@@ -31,6 +29,8 @@ class Browser:
     def close(self):
         self.browser.close()
 
+# ================================================================================ #
+
 
 # Create a class for user interface
 class UserInterface:
@@ -44,6 +44,3 @@ class UserInterface:
 
 
 # ================================================================================ #
-
-# create a Browser instance to import into the main file.
-browser = Browser(COURSE_URL)
