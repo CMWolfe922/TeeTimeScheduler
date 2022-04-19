@@ -33,7 +33,7 @@
    3. You should then see in the middle of the screen a Version number. Mine Looks like this: `Version 100.0.4896.127 (Official Build) (64-bit)`
    4. Now that you know your chrome browser version, go to this link to download the [link to download the webdriver](https://chromedriver.chromium.org/home) - if the driver version doesn't match your chrome version exactly, get the one that is closest to the same version number.
 
-   ![Downloading chrome webdriver page](./media/webdriver-download-page.JPG) 5. Once downloaded, create a folder in the main User home folder named `webdriver` and move the chrome driver from the `downloads` folder to the `webdriver` folder.
+   ![Downloading chrome webdriver page](/media/webdriver-download-page.JPG) 5. Once downloaded, create a folder in the main User home folder named `webdriver` and move the chrome driver from the `downloads` folder to the `webdriver` folder.
 
    - Example:`C:\Users\<user name>\webdriver`
 

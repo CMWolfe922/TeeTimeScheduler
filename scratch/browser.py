@@ -4,7 +4,7 @@ from selenium.webdriver.common.keys import Keys
 
 # Create a browser object that can open and close a url that is passed
 # to it that way you can name the object whatever the name of the
-# website is. Plus it can be used like a regular selenium object.
+# webA
 
 
 class Browser:
@@ -34,22 +34,3 @@ class Browser:
 
     def close(self):
         self.browser.close()
-
-# ===========================
-
-
-class HomePageLocators(object):
-    """This class is for locators on the Home Page"""
-    MEMBER_LOGIN = 'a#dnn_ctr354_HtmlModule_lblContent > a:nth-child(1)'
-
-
-class LoginPageLocators(object):
-    """This class is for locators on the Login Page"""
-    MEMBER_ID_INPUT = "input#_58_login"
-    MEMBER_PASSWORD_INPUT = "input#_58_password"
-    MEMBER_LOGIN_BUTTON = "button#yui_patched_v3_11_0_1_1650332440143_231"
-
-
-class LoggedInHomePageLocators:
-    """This class is for locators on the members home page after logging in"""
-    FORETEES_BUTTON = "#textured-cssmenu > ul > li:nth-child(5) > a > span"
