@@ -1,16 +1,24 @@
-from browser import Browser
+from browser import Browser, HomePageLocators
 from config.secrets import COURSE_URL
+from selenium import webdriver
+from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
-# Create a Browser Instance with the COURSE_URL > This is also a selenium object
-# so it will work with all the same selenium methods.
-course_browser = Browser(COURSE_URL)
 
-# Step 1: Open Browser
-course_browser.open()
+# Create a webdriver instance
+browser = Browser(COURSE_URL)
 
-# Step 2: Click Member Login
+# open the webpage
+browse = browser.browse()
 
+# Create a HomePageLocator object HPL to search for the button
+HPL = HomePageLocators()
 
-# Final Step: Close Browser
-course_browser.close()
+# Search for the HPL object
+homePageElem = browse.find_element_by_css_selector(HPL.MEMBER_LOGIN)
+
+# Click the button
+homePageElem.click()
+
+# Close Page
+browse.close()
