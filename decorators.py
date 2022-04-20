@@ -1,29 +1,35 @@
 #!/usr/bin/.venv python3
-
 from loguru import logger
 from functools import wraps
-from timeit import perf_counter
-# create a decorator function to more easily log errors and debug
+import time
+from pathlib import Path
+import os
+import sys
+
+# Loggers Path to save log files:
+logger_path = Path.cwd() + "\\data"
+
+# create a decorator function to more easi                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ly log errors and debug
 
 
-def logger(**config):
-    def decorator(func):
-        @wraps(func)
-        def wrapper(*args, **kwargs):
-            logger_config = {kwargs.get(kwarg) for kwarg in kwargs}
-            logger.info(func(*args, **logger_config))
-            return func(*args, **kwargs)
-        return wrapper
-    return decorator
+def start_log(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        base_format = "|{name}||{time}||{level}||{message}|"
+        file = os.path.join(logger_path, "main.log")
+
+        # add log before function or methods
+        logger.add(sys.stderr, format=base_format)
 
 
+# Build a normal timer just to take a log on execution time and
 # Timer decorator. Time the execution of the code.
 def timer(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
-        start = perf_counter()
+        start = time.time()
         result = func(*args, **kwargs)
-        end = perf_counter()
+        end = time.time()
         duration = end - start
         arg = str(*args)
         print(f'{func.__name__}({arg}) = {result} --> {duration:.8f}s')
