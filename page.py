@@ -4,16 +4,14 @@ from config.secrets import COURSE_URL, MEMBER_ID, PASSWORD
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from config.secrets import CHROMEDRIVER
 
 
-CHROMEDRIVER_PATH = r"C:\\Users\\charl\\webdriver\\chromedriver_win32\\chromedriver.exe"
-
-
-class SearchTextElement(BasePageElement):
+class SearchForElements(BasePageElement):
     """This class gets the search text from the specified locator"""
 
     # The locator for search box where search string is entered
-    locator = 'q'
+    locator = 'button'
 
 
 class BasePage(object):
@@ -28,7 +26,7 @@ class MainPage(BasePage):
     """Home page action methods come here. I.e. Python.org"""
 
     # Declares a variable that will contain the retrieved text
-    search_text_element = SearchTextElement()
+    search_text_element = SearchForElements()
 
     def is_title_matches(self):
         """Verifies that the hardcoded text "Python" appears in page title"""
