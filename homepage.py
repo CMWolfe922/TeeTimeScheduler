@@ -11,13 +11,14 @@ I need to create a way to resize the page to make sure the element
 I am looking for shows up under the tag I am looking for. And make sure
 the element is active.
 """
-
+from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.common import exceptions
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
-from decorators import base_logger
+from selenium.webdriver.support import expected_conditions as EC
+from decorators import Timer, Log
 
 
 class HomePageDropDown:
@@ -41,7 +42,8 @@ class HomePageLocators:
     FORETEES_BUTTON_XPATH_2 = "//a/span[contains(@class,'textured-nav-heading textured-nav-heading-unselected')][normalize-space()='Foretees']"
 
 
-@base_logger()
+@Timer()
+@Log(level="TRACE").catch()
 def click_foretees(driver):
     locator = HomePageLocators.FORETEES_BUTTON_XPATH_2
     try:
@@ -62,7 +64,8 @@ def click_foretees(driver):
         print(f"Error Raised {ae}")
 
 
-@base_logger()
+@Timer()
+@Log(level="TRACE").catch()
 def click_drop_down(driver):
     locator = HomePageDropDown.DD_BUTTON
     foretees = HomePageDropDown.FORETEES_DD_XPATH
@@ -80,7 +83,8 @@ def click_drop_down(driver):
         print("Element doesn't have that attribute ")
 
 
-@base_logger()
+@Timer()
+@Log(level="TRACE").catch()
 def home_page(driver):
     try:
         driver.find_element(By.CSS_SELECTOR, HomePageLocators.DROP_DOWN_MENU).click_and_hold()
@@ -92,3 +96,13 @@ class HomePageLocators:
     """Locators on Logged in home page"""
 
     DROP_DOWN_MENU_XPATH = "//div[@id='mm-menu-link']"
+
+    def activate_page(self, driver, locator):
+        wait = WebDriverWait(60).
+        pass
+
+    def wait_for_element(self, driver:webdriver, locator:tuple, wait:int=60):
+        """Wait for element to show up on page"""
+        try:
+            element = WebDriverWait(driver, wait).until(EC.presence_of_element_located(locator))
+
