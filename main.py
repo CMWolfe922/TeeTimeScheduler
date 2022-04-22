@@ -1,39 +1,44 @@
-
 from config.secrets import COURSE_URL, PASSWORD, MEMBER_ID
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from decorators import logger, timer
+from selenium.common import exceptions as selenium_exceptions
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.ui import WebDriverWait
+from decorators import base_logger
+
 import time
 
-
 # Path to Chrome Driver
-CHROMEDRIVER_PATH = r"C:\\Users\\charl\\webdriver\\chromedriver_win32\\chromedriver.exe"
-FIREFOXDRIVER_PATH = r"C:\Users\charl\webdriver\geckodriver-v0.31.0-win64\geckodriver.exe"
+CHROMEDRIVER_PATH = r"C:\\webdriver\\chromedriver.exe"
+FIREFOXDRIVER_PATH = r"C:\\webdriver\\geckodriver.exe"
 
 
 class HomePageLocators:
     """This class is for locators on the Home Page"""
-    MEMBER_LOGIN = 'a#dnn_ctr354_HtmlModule_lblContent > a:nth-child(1)'
-    MEMBER_LOGIN_LINK = "https://members.burloaksgolfclub.com/web/pages/login"
+    DROP_DOWN_MENU = ".humburger"
 
 
 class LoginPageLocators:
     """This class is for locators on the Login Page"""
     MEMBER_ID_INPUT = "_58_login"
     MEMBER_PASSWORD_INPUT = "_58_password"
-    MEMBER_LOGIN_BUTTON = ".mm_login.login-page .background-wrap #content-wrapper-login .login-col-left .button-holder .btn"
+    MEMBER_LOGIN_BUTTON = """
+    .mm_login.login-page .background-wrap #content-wrapper-login.login-col-left .button-holder .btn
+    """
 
 
 class LoggedInHomePageLocators:
     """This class is for locators on the members home page after logging in"""
     FORETEES_BUTTON_PARTIAL = "Foretees"
-    FORETEES_BUTTON_XPATH = "//*[@id='textured-cssmenu'']/ul/li[5]/a"
-    FORETEES_BUTTON_CSS_SELECTOR = "li.textured-nav-parent:nth-child(5) > a:nth-child(1) > span:nth-child(1)"
+    FORETEES_BUTTON_XPATH = "//span[text()[normalize-space()='Foretees']]"
+    FORETEES_XPATH_LONG = "//div[@id='textured-cssmenu']/ul[1]/li[5]/a[1]/span[1]"
+    FORETEES_BUTTON_CSS_SELECTOR = "div#textured-cssmenu>ul>li:nth-of-type(5)>a>span"
+    FORETEES_BUTTON_PAGE_ID = "//*[@data-pageid='53']"
 
 
-def login():
-
+@base_logger()
+def login(driver):
     # find member id input box:
     driver.find_element(
         By.ID, LoginPageLocators.MEMBER_ID_INPUT).send_keys(MEMBER_ID)
@@ -48,31 +53,40 @@ def login():
 
     time.sleep(5)
 
+@base_logger()
+def click_foretees(driver, menu):
 
-def click_foretees():
+    pass
 
-    # find the foretees button using CSS_SELECTOR
-    driver.find_element(
-        By.PARTIAL_LINK_TEXT, LoggedInHomePageLocators.FORETEES_BUTTON).click()
 
-    time.sleep(5)
+@base_logger()
+def home_page(driver):
+    try:
+        driver.find_element(By.CSS_SELECTOR, HomePageLocators.DROP_DOWN_MENU).click_and_hold()
+        driver.implicitly_wait(10)
+    except selenium_exceptions as se:
+        print(se)
 
 
 if __name__ == '__main__':
     # Create a webdriver instance
-    driver = webdriver.Chrome(CHROMEDRIVER_PATH)
+    driver = webdriver.Chrome(CHROMEDRIVER_PATH).maximize_window()
 
     # Open the url with driver
     driver.get(COURSE_URL)
+
     # ================================================================ #
     # RUN INITIAL PROGRAM FUNCTIONS:
     # ================================================================ #
 
     # run login function
-    login()
+    login(driver)
 
-    # run click foretees function
-    click_foretees()
+    # wait for page to load
+    driver.implicitly_wait(10)
+
+    # run home_page function
+    home_page(driver)
 
     # ================================================================ #
     # close Browser

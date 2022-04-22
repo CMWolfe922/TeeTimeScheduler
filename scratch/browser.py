@@ -1,6 +1,11 @@
+from config.secrets import COURSE_URL, PASSWORD, MEMBER_ID
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.common import exceptions as selenium_exceptions
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.ui import WebDriverWait
+from decorators import base_logger
 
 # Create a browser object that can open and close a url that is passed
 # to it that way you can name the object whatever the name of the
