@@ -1,4 +1,4 @@
-from config.secrets import COURSE_URL, PASSWORD, MEMBER_ID
+from config.secrets import COURSE_URL, PASSWORD, MEMBER_ID, LOGIN_BTN
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -23,9 +23,8 @@ class LoginPageLocators:
     """This class is for locators on the Login Page"""
     MEMBER_ID_INPUT = "_58_login"
     MEMBER_PASSWORD_INPUT = "_58_password"
-    MEMBER_LOGIN_BUTTON = """
-    .mm_login.login-page .background-wrap #content-wrapper-login.login-col-left .button-holder .btn
-    """
+    # BTN_CSS_SELECTOR = ".mm_login.login-page .background-wrap #content-wrapper-login .login-col-left .button-holder .btn"
+    BTN_CSS_SELECTOR = LOGIN_BTN
 
 
 class LoggedInHomePageLocators:
@@ -48,16 +47,14 @@ def login(driver):
         By.ID, LoginPageLocators.MEMBER_PASSWORD_INPUT).send_keys(PASSWORD)
 
     # find submit button to login
-    driver.find_element(
-        By.CSS_SELECTOR, LoginPageLocators.MEMBER_LOGIN_BUTTON).click()
-
+    # driver.find_element(By.CSS_SELECTOR, LoginPageLocators.MEMBER_LOGIN_BUTTON).click()
+    driver.find_element(By.CSS_SELECTOR, LoginPageLocators.BTN_CSS_SELECTOR).click()
     time.sleep(5)
 
-@base_logger()
+
+
 def click_foretees(driver, menu):
-
     pass
-
 
 @base_logger()
 def home_page(driver):
@@ -70,7 +67,7 @@ def home_page(driver):
 
 if __name__ == '__main__':
     # Create a webdriver instance
-    driver = webdriver.Chrome(CHROMEDRIVER_PATH).maximize_window()
+    driver = webdriver.Chrome(CHROMEDRIVER_PATH)
 
     # Open the url with driver
     driver.get(COURSE_URL)

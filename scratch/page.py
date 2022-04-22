@@ -1,4 +1,4 @@
-from locators import MainPageLocators
+from locators import LoginPageLocators
 from element import BasePageElement
 from config.secrets import COURSE_URL, MEMBER_ID, PASSWORD
 from selenium import webdriver
@@ -8,11 +8,10 @@ from config.secrets import CHROMEDRIVER
 
 
 class SearchForElements(BasePageElement):
-    """This class gets the search text from the specified locator"""
+    """This class confirms elements exist or are showing up"""
 
-    # The locator for search box where search string is entered
-    locator = 'q'
-
+    # Home Page:
+    dropdown_menu = ".humburger" # css selector
 
 class BasePage(object):
     """Base class to initialize the base page that will be called from all
@@ -22,7 +21,7 @@ class BasePage(object):
         self.driver = driver
 
 
-class MainPage(BasePage):
+class HomePage(BasePage):
     """Home page action methods come here. I.e. Python.org"""
 
     # Declares a variable that will contain the retrieved text
@@ -31,12 +30,12 @@ class MainPage(BasePage):
     def is_title_matches(self):
         """Verifies that the hardcoded text "Python" appears in page title"""
 
-        return "Python" in self.driver.title
+        return "Burl Oaks Golf Club" in self.driver.title
 
     def click_go_button(self):
         """Triggers the search"""
 
-        element = self.driver.find_element(*MainPageLocators.GO_BUTTON)
+        element = self.driver.find_element(*LoginPageLocators.BTN)
         element.click()
 
 
