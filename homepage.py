@@ -11,68 +11,17 @@ I need to create a way to resize the page to make sure the element
 I am looking for shows up under the tag I am looking for. And make sure
 the element is active.
 """
-from selenium import webdriver
-from selenium.webdriver.common.by import By
+
 from selenium.common import exceptions
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from decorators import Timer, Log
-from config.secrets import DROPDOWN_LINK, DROPDOWN_DIV, FORETEES_DROPDOWN_BTN, FORETEES_TOP_BTN
-from config.secrets import CHROMEDRIVER, FIREFOXDRIVER, SAFARIDRIVER, EDGEDRIVER
-
-
-@Log(level="TRACE")
-def click_foretees(driver):
-    locator = FORETEES_TOP_BTN
-    try:
-        element = driver.find_element(By.XPATH, locator)
-        element.click()
-        return element
-
-    except exceptions.ElementNotInteractableException as ni:
-        print(f"Exception Raised {ni}")
-
-    except exceptions.NoSuchElementException as ne:
-        print(f"Exception Raised {ne}")
-
-    except exceptions.ElementNotVisibleException as nv:
-        print(f"Exception Raised {nv}")
-
-    except AttributeError as ae:
-        print(f"Error Raised {ae}")
-
-
-@Log(level="TRACE")
-def click_drop_down(driver):
-    locator = DROPDOWN_DIV
-    foretees = DROPDOWN_LINK
-    try:
-        element = driver.find_element(By.XPATH, locator)
-        print(element)
-        hover = ActionChains(driver).move_to_element(element).click()
-        hover.move_to_element(foretees)
-        hover.click()
-        return hover
-    except exceptions.ElementNotInteractableException as se:
-        print(f"Exception Raised {se}")
-
-    except AttributeError as ae:
-        print("Element doesn't have that attribute ")
-
-
-@Log(level="TRACE")
-def home_page(driver):
-    try:
-        driver.find_element(By.CSS_SELECTOR, DROPDOWN_DIV).click()
-        driver.implicitly_wait(10)
-    except exceptions.ElementNotInteractableException as se:
-        print(se)
+from decorators import base_logger
 
 
 class HomePage:
     """Locators on Logged in home page"""
 
+    @base_logger()
     def wait_for_element(self, driver, locator:tuple, wait:int=60):
         """Wait for element to show up on page"""
         try:
