@@ -3,7 +3,7 @@ from login import login
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from selenium.common import exceptions as selenium_exceptions
+from selenium.common import exceptions
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from decorators import base_logger
@@ -31,30 +31,41 @@ class HomePageLocators:
     FORETEES_BUTTON_PAGE_ID = "//*[@data-pageid='53']"
     # Error Message: selenium.common.exceptions.ElementNotInteractableException: Message: element not interactable
     FORETEES_BUTTON_XPATH_1 = "//span[@class='textured-nav-heading textured-nav-heading-unselected'][normalize-space()='Foretees']"
+    FORETEES_BUTTON_XPATH_2 = "//a/span[contains(@class,'textured-nav-heading textured-nav-heading-unselected')][normalize-space()='Foretees']"
 
 
 @base_logger()
 def click_foretees(driver):
-    locator = HomePageLocators.FORETEES_BUTTON_XPATH_1
-    driver.find_element(By.XPATH, locator).click()
+    locator = HomePageLocators.FORETEES_BUTTON_XPATH_2
+    try:
+        element = driver.find_element(By.XPATH, locator)
+        element.click()
+        return element
 
+    except exceptions.ElementNotInteractableException as ni:
+        print(f"Exception Raised {ni}")
+
+    except exceptions.NoSuchElementException as ne:
+        print(f"Exception Raised {ne}")
+
+    except exceptions.ElementNotVisibleException as nv:
+        print(f"Exception Raised {nv}")
+
+    except AttributeError as ae:
+        print(f"Error Raised {ae}")
 
 @base_logger()
 def click_drop_down(driver):
     locator = HomePageDropDown.DD_BUTTON
     try:
         element = driver.find_element(By.XPATH, locator)
-        element.click_and_hold()
-        return element
-    except selenium_exceptions as se:
-        print(f"Exception Raised {se}")
-
-    try:
-        element = driver.find_element(By.XPATH, locator)
         element.click()
         return element
-    except selenium_exceptions as se:
+    except exceptions.ElementNotInteractableException as se:
         print(f"Exception Raised {se}")
+
+    except AttributeError as ae:
+        print("Element doesn't have that attribute ")
 
 
 @base_logger()
@@ -62,7 +73,7 @@ def home_page(driver):
     try:
         driver.find_element(By.CSS_SELECTOR, HomePageLocators.DROP_DOWN_MENU).click_and_hold()
         driver.implicitly_wait(10)
-    except selenium_exceptions as se:
+    except exceptions.ElementNotInteractableException as se:
         print(se)
 
 
@@ -84,8 +95,8 @@ if __name__ == '__main__':
     driver.implicitly_wait(10)
 
     # run home_page function
-    # click_foretees(driver)
-    click_drop_down(driver)
+    click_foretees(driver)
+    # click_drop_down(driver)
     # ================================================================ #
     # close Browser
     driver.close()
