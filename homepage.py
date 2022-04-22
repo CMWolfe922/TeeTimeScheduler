@@ -21,8 +21,8 @@ from decorators import Timer, Log
 from config.secrets import DROPDOWN_LINK, DROPDOWN_DIV, FORETEES_DROPDOWN_BTN, FORETEES_TOP_BTN
 from config.secrets import CHROMEDRIVER, FIREFOXDRIVER, SAFARIDRIVER, EDGEDRIVER
 
-@Timer()
-@Log(level="TRACE").catch()
+
+@Log(level="TRACE")
 def click_foretees(driver):
     locator = FORETEES_TOP_BTN
     try:
@@ -43,8 +43,7 @@ def click_foretees(driver):
         print(f"Error Raised {ae}")
 
 
-@Timer()
-@Log(level="TRACE").catch()
+@Log(level="TRACE")
 def click_drop_down(driver):
     locator = DROPDOWN_DIV
     foretees = DROPDOWN_LINK
@@ -62,8 +61,7 @@ def click_drop_down(driver):
         print("Element doesn't have that attribute ")
 
 
-@Timer()
-@Log(level="TRACE").catch()
+@Log(level="TRACE")
 def home_page(driver):
     try:
         driver.find_element(By.CSS_SELECTOR, DROPDOWN_DIV).click()
@@ -75,28 +73,9 @@ def home_page(driver):
 class HomePage:
     """Locators on Logged in home page"""
 
-    def __init__(self, url, driver_name="Chrome"):
-        self.url = url
-        if driver_name == "FireFox":
-            self.driver = webdriver.Chrome(FIREFOXDRIVER)
-        elif driver_name == "Edge":
-            self.driver = webdriver.Chrome(EDGEDRIVER)
-        elif driver_name == "Safari":
-            self.driver = webdriver.Chrome(SAFARIDRIVER)
-        elif driver_name == "Chrome":
-            self.driver = webdriver.Chrome(CHROMEDRIVER)
-
-    def __repr__(self):
-        return f"Browser Object Created: Using {self.driver} to open {self.url}"
-
-    @Timer()
-    @Log()
-    def wait_for_element(self, locator:tuple, wait:int=60):
+    def wait_for_element(self, driver, locator:tuple, wait:int=60):
         """Wait for element to show up on page"""
         try:
-            driver = self.driver
-            driver.maximize_window()
-            driver.get(self.url)
             element = WebDriverWait(driver, wait).until(EC.presence_of_element_located(locator))
             text = element.text
             if text:
@@ -119,4 +98,4 @@ class HomePage:
             print(f"Error: {ae}")
 
         finally:
-            self.driver.implicitly_wait(wait / 3)
+            driver.implicitly_wait(wait / 3)

@@ -63,7 +63,7 @@ def Log(*, entry=True, exit=True, level="INFO"):
 
 # Build a normal timer just to take a log on execution time and
 # Timer decorator. Time the execution of the code.
-def Timer(func):
+def Timer(func) -> object:
 
     @wraps(func)
     def wrapped(*args,**kwargs):
