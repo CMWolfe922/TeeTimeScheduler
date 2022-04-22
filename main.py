@@ -1,4 +1,5 @@
-from config.secrets import COURSE_URL, PASSWORD, MEMBER_ID, LOGIN_BTN
+from config.secrets import COURSE_URL
+from login import login
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -20,14 +21,6 @@ class HomePageDropDown:
     DD_FORETEES_BTN_XPATH = "//span[@class='smartphone-nav-heading'][normalize-space()='Foretees']"
     DD_BUTTON = "//div[@id='mm-menu-link']"
 
-class LoginPageLocators:
-    """This class is for locators on the Login Page"""
-    MEMBER_ID_INPUT = "_58_login"
-    MEMBER_PASSWORD_INPUT = "_58_password"
-    # BTN_CSS_SELECTOR = ".mm_login.login-page .background-wrap #content-wrapper-login .login-col-left .button-holder .btn"
-    BTN_CSS_SELECTOR = LOGIN_BTN
-
-
 
 class HomePageLocators:
     """This class is for locators on the members home page after logging in"""
@@ -38,22 +31,6 @@ class HomePageLocators:
     FORETEES_BUTTON_PAGE_ID = "//*[@data-pageid='53']"
     # Error Message: selenium.common.exceptions.ElementNotInteractableException: Message: element not interactable
     FORETEES_BUTTON_XPATH_1 = "//span[@class='textured-nav-heading textured-nav-heading-unselected'][normalize-space()='Foretees']"
-
-
-@base_logger()
-def login(driver):
-    # find member id input box:
-    driver.find_element(
-        By.ID, LoginPageLocators.MEMBER_ID_INPUT).send_keys(MEMBER_ID)
-
-    # find password input box
-    driver.find_element(
-        By.ID, LoginPageLocators.MEMBER_PASSWORD_INPUT).send_keys(PASSWORD)
-
-    # find submit button to login
-    # driver.find_element(By.CSS_SELECTOR, LoginPageLocators.MEMBER_LOGIN_BUTTON).click()
-    driver.find_element(By.CSS_SELECTOR, LoginPageLocators.BTN_CSS_SELECTOR).click()
-    time.sleep(5)
 
 
 @base_logger()

@@ -1,10 +1,5 @@
 from config.secrets import LOGIN_BTN, MEMBER_ID, PASSWORD
-from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.common import exceptions as selenium_exceptions
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.support.ui import WebDriverWait
 from decorators import base_logger
 import time
 
