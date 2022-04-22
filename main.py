@@ -20,6 +20,7 @@ class HomePageDropDown:
     DD_BTN_ATTEMPT_1 = "//a[contains(@href, '#menu']"
     DD_FORETEES_BTN_XPATH = "//span[@class='smartphone-nav-heading'][normalize-space()='Foretees']"
     DD_BUTTON = "//div[@id='mm-menu-link']"
+    FORETEES_DD_XPATH = "//span[@class='smartphone-nav-heading'][normalize-space()='Foretees']"
 
 
 class HomePageLocators:
@@ -54,13 +55,17 @@ def click_foretees(driver):
     except AttributeError as ae:
         print(f"Error Raised {ae}")
 
+
 @base_logger()
 def click_drop_down(driver):
     locator = HomePageDropDown.DD_BUTTON
+    foretees = HomePageDropDown.FORETEES_DD_XPATH
     try:
         element = driver.find_element(By.XPATH, locator)
-        element.click()
-        return element
+        hover = ActionChains(driver).move_to_element(element).click()
+        hover.move_to_element(foretees)
+        hover.click()
+        return hover
     except exceptions.ElementNotInteractableException as se:
         print(f"Exception Raised {se}")
 
@@ -95,8 +100,8 @@ if __name__ == '__main__':
     driver.implicitly_wait(10)
 
     # run home_page function
-    click_foretees(driver)
-    # click_drop_down(driver)
+    # click_foretees(driver)
+    click_drop_down(driver)
     # ================================================================ #
     # close Browser
     driver.close()
