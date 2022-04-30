@@ -95,6 +95,7 @@ class ForeTees:
     @base_logger()
     def determine_time(self, locator, t, driver):
         """This method picks the tee time"""
+        pass
 
 
 
