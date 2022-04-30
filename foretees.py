@@ -51,6 +51,7 @@ PARTNERS_LINK = "(//a[normalize-space()='Select Player #2'])[1]"
 
 ClickOnPartner= "//span[normalize-space()='Frank, Jordan (12.5)']"
 
+
 class ForeTeesLocators:
 
     TEE_TIMES = (By.XPATH, "//div[@id='rwdNav']//ul//li[@class='topnav_item ']//a[@href='#']//span[@class='topnav_item'][normalize-space()='Tee Times']")
@@ -61,13 +62,24 @@ class ForeTeesLocators:
     # a function that selects the three time slots after whichever timeslot Kevin Chooses.
     TEE_TIME_LINK = (By.XPATH, "//a[normalize-space()='8:00 AM']")
 
+
 class ForeTees:
     """This is a action class. The methods are for making specific actions happen on the
     foretees website once logged in"""
 
     @base_logger()
     def hover_and_click_tee_times(self, locator, target, driver):
-        """This is the first action to take on the ForeTess website once on it"""
+        """
+        This is the first action to take on the ForeTess website once on it.
+
+        :param locator: First element on ForeTees' site (top menu) to hover over and allow
+        to move to target element. import TT_MENU from secrets.py
+
+        :param target: Second element to interact with on ForeTees. While hovering over menu
+        move mouse to target and click. import TT_MENU_BTN from secrets.py
+
+        :param driver: This is the standard driver that will be created on the main page.
+        """
         try:
             menu = driver.find_element(By.XPATH, locator)
             menu_btn = driver.find_element(By.XPATH, target)

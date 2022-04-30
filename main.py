@@ -1,10 +1,12 @@
 from config.secrets import COURSE_URL
 from login import login
+from foretees import ForeTees
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from homepage import HomePage
 from config.secrets import CHROMEDRIVER, FIREFOXDRIVER, SAFARIDRIVER, EDGEDRIVER
 from config.secrets import DROPDOWN_LINK, DROPDOWN_DIV, FORETEES_DROPDOWN_BTN, FORETEES_TOP_BTN
+from config.secrets import TT_MENU_BTN, TT_MENU
 import time
 
 
@@ -29,9 +31,13 @@ def get_driver(driver_name="Chrome"):
 # CHROMEDRIVER_PATH = r"C:\\webdriver\\chromedriver.exe"
 # FIREFOXDRIVER_PATH = r"C:\\webdriver\\geckodriver.exe"
 
-
+# Create a HomePage instance:
 homepage = HomePage()
-locator = (By.XPATH, FORETEES_TOP_BTN)
+homepage_locator = (By.XPATH, FORETEES_TOP_BTN)
+
+
+# Create a ForeTess instance:
+foretees = ForeTees()
 
 if __name__ == '__main__':
     driver = get_driver()
@@ -48,7 +54,10 @@ if __name__ == '__main__':
     login(driver)
 
     # Run HomePage Method
-    homepage.wait_for_element(driver, locator)
+    homepage.wait_for_element(driver, homepage_locator)
+
+    # Run ForeTees methods:
+    foretees.hover_and_click_tee_times(TT_MENU, TT_MENU_BTN, driver)
     # ================================================================ #
     time.sleep(10)
     # close Browser
