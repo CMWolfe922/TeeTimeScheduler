@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 
-from selenium import webdriver
+from config.secrets import TT_MENU, TT_MENU_BTN
 from selenium.webdriver.common.by import By
+from selenium.webdriver import ActionChains
 from selenium.common import exceptions
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from config.secrets import CHROMEDRIVER, COURSE_URL
+from decorators import base_logger
 
 """
 This script will be responsible for scheduling the round of golf. Once I can have
@@ -58,4 +60,41 @@ class ForeTeesLocators:
     # I need to figure out how to change the 8:00AM to whatever time is in the config.ini file. and create
     # a function that selects the three time slots after whichever timeslot Kevin Chooses.
     TEE_TIME_LINK = (By.XPATH, "//a[normalize-space()='8:00 AM']")
+
+class ForeTees:
+    """This is a action class. The methods are for making specific actions happen on the
+    foretees website once logged in"""
+
+    @base_logger()
+    def hover_and_click_tee_times(self, locator, target, driver):
+        """This is the first action to take on the ForeTess website once on it"""
+        try:
+            menu = driver.find_element(By.XPATH, locator)
+            menu_btn = driver.find_element(By.XPATH, target)
+            actions = ActionChains(driver)
+            actions.move_to_element(menu)
+            actions.click(menu_btn)
+            actions.perform()
+
+        except exceptions.NoSuchElementException as ne:
+            print(ne)
+
+        except exceptions.ElementNotInteractableException as ni:
+            print(ni)
+
+        except exceptions.ElementNotVisibleException as nv:
+            print(nv)
+
+        except exceptions.ElementNotSelectableException as ns:
+            print(ns)
+
+        finally:
+            print("[+] ForeTees page method complete")
+
+
+    @base_logger()
+    def determine_time(self, locator, t, driver):
+        """This method picks the tee time"""
+
+
 
