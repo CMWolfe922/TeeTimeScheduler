@@ -64,8 +64,10 @@ class ForeTeesLocators:
 
 
 class ForeTees:
-    """This is a action class. The methods are for making specific actions happen on the
+    """This is an action class. The methods are for making specific actions happen on the
     foretees website once logged in"""
+
+    # Class Properties:
 
     @base_logger()
     def hover_and_click_tee_times(self, locator, target, driver):
@@ -109,5 +111,9 @@ class ForeTees:
         """This method picks the tee time"""
         pass
 
+    @base_logger()
+    def tee_time_scheduler(self, locator, time, calendar):
+
+        pass
 
 
