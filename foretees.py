@@ -37,7 +37,7 @@ class ForeTeesLocators:
 
     TEE_TIME_LINKS = (By.XPATH, "//div[@id='rwdNav']//ul//li[@class='topnav_item ']//a[@href='#']//span[@class='topnav_item'][normalize-space()='Tee Times']")
     MCV_TEE_TIMES = (By.XPATH, "//div[@id='rwdNav']//ul//li[@class='topnav_item ']//ul//li[@aria-haspopup='false']//a[@href='Member_select']//span[contains(text(),'Make, Change, or View Tee Times')]")
-    TEETIME = (By.XPATH, "//a[normalize-space()='{}']".format(int(TEE_TIME)))
+    TEETIME = (By.XPATH, "//a[normalize-space()='{}']".format(TEE_TIME))
     CALENDAR = (By.XPATH, "(//a[normalize-space()='{}'])[1]".format(dow))
     PARTNER2 = (By.XPATH, "(//a[normalize-space()='Select Player #2'])[1]")
     PARTNER3 = (By.XPATH, "(//a[normalize-space()='Select Player #3'])[1]")
