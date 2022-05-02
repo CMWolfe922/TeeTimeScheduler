@@ -1,6 +1,6 @@
 from config.secrets import COURSE_URL
 from login import login
-from foretees import ForeTees
+from foretees import ForeTees, CALENDAR
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from homepage import HomePage
@@ -58,6 +58,9 @@ if __name__ == '__main__':
 
     # Run ForeTees methods:
     foretees.hover_and_click_tee_times(TT_MENU, TT_MENU_BTN, driver)
+
+    # Method to Pick the Tee Time Date
+    foretees.pick_date(driver, CALENDAR)
     # ================================================================ #
     time.sleep(10)
     # close Browser

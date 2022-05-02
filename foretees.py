@@ -34,8 +34,9 @@ MCV_TEE_TIMES = "//div[@id='rwdNav']//ul//li[@class='topnav_item ']//ul//li[@ari
 #  if tuesday click next tuesday, etc..)
 
 # Calendar Locator/Selector below
-CALENDAR = "(//a[normalize-space()='29'])[1]"
+CALENDAR = (By.XPATH, "(//a[normalize-space()='8'])[1]")
 
+CALENDAR_CSS = ".ui-state-default.ui-state-hover"
 # RESULT: The Tee Time scheduler shows up. This is where you pick the time and your four team mates.
 
 # TODO: Click on the time saved in the options file.
@@ -61,6 +62,7 @@ class ForeTeesLocators:
     # I need to figure out how to change the 8:00AM to whatever time is in the config.ini file. and create
     # a function that selects the three time slots after whichever timeslot Kevin Chooses.
     TEE_TIME_LINK = (By.XPATH, "//a[normalize-space()='8:00 AM']")
+    CALENDAR_CSS = (By.CSS_SELECTOR, ".ui-state-default.ui-state-hover")
 
 
 class ForeTees:
@@ -104,6 +106,13 @@ class ForeTees:
 
         finally:
             print("[+] ForeTees page method complete")
+
+    @base_logger()
+    def pick_date(self, driver, locator:tuple, wait:int=60):
+        """This method selects the date for the next tee time"""
+        element = WebDriverWait(driver, wait).until(EC.presence_of_element_located(locator))
+        print(element)
+        element.click()
 
 
     @base_logger()
