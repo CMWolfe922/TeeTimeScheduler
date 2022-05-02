@@ -47,10 +47,12 @@ class ForeTeesLocators:
     MCV_TEE_TIMES = (By.XPATH, "//div[@id='rwdNav']//ul//li[@class='topnav_item ']//ul//li[@aria-haspopup='false']//a[@href='Member_select']//span[contains(text(),'Make, Change, or View Tee Times')]")
     TEETIME = (By.XPATH, "//a[normalize-space()='{}:{} {}']".format(H, M, ToD))
     CALENDAR = (By.XPATH, "(//a[normalize-space()='{}'])[1]".format(dow))
-    PARTNER2 = (By.XPATH, "(//a[normalize-space()='Select Player #2'])[1]")
-    PARTNER3 = (By.XPATH, "(//a[normalize-space()='Select Player #3'])[1]")
-    PARTNER4 = (By.XPATH, "(//a[normalize-space()='Select Player #4'])[1]")
     PARTNERS_BY_NAME = (By.XPATH, "//span[normalize-space()='{}']".format(partner_name))
+
+    PLAYER_INPUT = (By.XPATH, "//div[@id='slot_player_row_1']//div[@class='rwdTd ftS-playerCell']//div//input[@type='text']")
+    PLAYERS_LIST = (By.XPATH, "//span[normalize-space()='Frank, Jordan (12.5)']")
+    PLAYER_INPUT_CSS = (By.CSS_SELECTOR, "div[id='slot_player_row_1'] div[class='rwdTd ftS-playerCell'] div input[type='text']")
+    REGISTER_TEE_TIME_BTN = (By.XPATH, "//a[@class='submit_request_button']")
 
 class ForeTees:
     """This is an action class. The methods are for making specific actions happen on the
@@ -112,9 +114,8 @@ class ForeTees:
         element.click()
 
 
-
     @base_logger()
-    def tee_time_scheduler(self, locator, time, calendar):
+    def pick_players(self, driver, wait:int=60):
 
         pass
 
