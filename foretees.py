@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from config.secrets import TT_MENU, TT_MENU_BTN
+from config.secrets import TT_MENU, TT_MENU_BTN, TEE_TIME, DAYS_AHEAD
 from selenium.webdriver.common.by import By
 from selenium.webdriver import ActionChains
 from selenium.common import exceptions
@@ -8,6 +8,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from config.secrets import CHROMEDRIVER, COURSE_URL
 from decorators import base_logger
+import datetime
 
 """
 This script will be responsible for scheduling the round of golf. Once I can have
@@ -18,52 +19,30 @@ miss anything. I can use the saved recorded steps.
 """
 
 
-# TODO: Hover on top of 'Tee Times' to then move mouse down one; Element XPATH below
-
-#  Remember to just hover
-TEE_TIMES = "//body/div[@id='wrapper']/div[@id='rwd_wrapper']/div[@id='pageHeader']/div[@id='rwdNavBlock']/div[@id='rwdNav']/ul/li[1]/a[1]"
-
-# RESULT: drop down menu with 4 options shows up.
-
-# TODO: 'Move Mouse' to the 'Make, Change, or View Tee Times' element and click()
-MCV_TEE_TIMES = "//div[@id='rwdNav']//ul//li[@class='topnav_item ']//ul//li[@aria-haspopup='false']//a[@href='Member_select']//span[contains(text(),'Make, Change, or View Tee Times')]"
-
-# RESULT: Get Brought to the Select Dates Page with the calendar
-
-# TODO: click the date one week ahead of today (so if monday click next monday,
-#  if tuesday click next tuesday, etc..)
-
-# Calendar Locator/Selector below
-CALENDAR = (By.XPATH, "(//a[normalize-space()='8'])[1]")
-
-CALENDAR_CSS = ".ui-state-default.ui-state-hover"
-# RESULT: The Tee Time scheduler shows up. This is where you pick the time and your four team mates.
-
-# TODO: Click on the time saved in the options file.
-
-TEE_TIME_LINK = "//a[normalize-space()='8:00 AM']"
-
-# RESULT: Go to the screen where you select the players with whom you want to play with:
-
-# TODO: Select players for this session (4 per session) first four in partners
-
-PARTNERS_LINK = "(//a[normalize-space()='Select Player #2'])[1]"
+def schedule_tee_time_number_of_days_ahead(number_of_days=int(DAYS_AHEAD)):
+    # Date of next round (always schedules seven days ahead of when the script is automatically run
+    today = datetime.date.today()
+    date_of_round = today + datetime.timedelta(days=number_of_days)
+    day = datetime.datetime.strptime(str(date_of_round), "%Y-%m-%d")
+    dow = day.day
+    return dow
 
 
-ClickOnPartner= "//span[normalize-space()='Frank, Jordan (12.5)']"
+# This should be 7 but can bee changed if needed in the config.ini file
+dow = schedule_tee_time_number_of_days_ahead()
+partner_name = ""
 
 
 class ForeTeesLocators:
 
-    TEE_TIMES = (By.XPATH, "//div[@id='rwdNav']//ul//li[@class='topnav_item ']//a[@href='#']//span[@class='topnav_item'][normalize-space()='Tee Times']")
+    TEE_TIME_LINKS = (By.XPATH, "//div[@id='rwdNav']//ul//li[@class='topnav_item ']//a[@href='#']//span[@class='topnav_item'][normalize-space()='Tee Times']")
     MCV_TEE_TIMES = (By.XPATH, "//div[@id='rwdNav']//ul//li[@class='topnav_item ']//ul//li[@aria-haspopup='false']//a[@href='Member_select']//span[contains(text(),'Make, Change, or View Tee Times')]")
-    # I need to figure out how to change the 29 to whatever I want or to todays date + 7
-    CALENDAR = (By.XPATH, "(//a[normalize-space()='29'])[1]")
-    # I need to figure out how to change the 8:00AM to whatever time is in the config.ini file. and create
-    # a function that selects the three time slots after whichever timeslot Kevin Chooses.
-    TEE_TIME_LINK = (By.XPATH, "//a[normalize-space()='8:00 AM']")
-    CALENDAR_CSS = (By.CSS_SELECTOR, ".ui-state-default.ui-state-hover")
-
+    TEETIME = (By.XPATH, "//a[normalize-space()='{}']".format(int(TEE_TIME)))
+    CALENDAR = (By.XPATH, "(//a[normalize-space()='{}'])[1]".format(dow))
+    PARTNER2 = (By.XPATH, "(//a[normalize-space()='Select Player #2'])[1]")
+    PARTNER3 = (By.XPATH, "(//a[normalize-space()='Select Player #3'])[1]")
+    PARTNER4 = (By.XPATH, "(//a[normalize-space()='Select Player #4'])[1]")
+    PARTNERS_BY_NAME = (By.XPATH, "//span[normalize-space()='{}']".format(partner_name))
 
 class ForeTees:
     """This is an action class. The methods are for making specific actions happen on the
@@ -108,17 +87,23 @@ class ForeTees:
             print("[+] ForeTees page method complete")
 
     @base_logger()
-    def pick_date(self, driver, locator:tuple, wait:int=60):
+    def pick_date(self, driver, wait:int=60):
         """This method selects the date for the next tee time"""
+        locator = ForeTeesLocators.CALENDAR
         element = WebDriverWait(driver, wait).until(EC.presence_of_element_located(locator))
         print(element)
         element.click()
 
 
     @base_logger()
-    def determine_time(self, locator, t, driver):
+    def pick_tee_time(self, driver, wait:int=60):
         """This method picks the tee time"""
-        pass
+        time = ForeTeesLocators.TEETIME
+        element = WebDriverWait(driver, wait).until(EC.presence_of_element_located(time))
+        print(element)
+        element.click()
+
+
 
     @base_logger()
     def tee_time_scheduler(self, locator, time, calendar):
