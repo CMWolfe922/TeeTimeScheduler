@@ -1,5 +1,7 @@
 import datetime
-from config.secrets import TEE_TIME
+import re
+
+TEE_TIME = '1:00 PM'
 
 
 today = datetime.date.today()
@@ -9,11 +11,15 @@ dow = day.day
 print(dow)
 
 
-def get_tee_time_ready():
-    hr = TEE_TIME
-    print(hr)
+def get_correct_tee_time(TEE_TIME):
+    time = TEE_TIME
+    hr = time.split(":")
+    mins = hr[1].split(" ")
+    hour, minutes, tod = hr[0], mins[0], mins[1]
+    return hour, minutes, tod
 
+H, M, ToD = get_correct_tee_time(TEE_TIME)
 
-
-# hr, mins, tod = get_tee_time_ready(TEE_TIME)
-get_tee_time_ready(TEE_TIME)
+print(H)
+print(M)
+print(ToD)

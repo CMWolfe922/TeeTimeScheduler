@@ -27,9 +27,14 @@ def schedule_tee_time_number_of_days_ahead(number_of_days=int(DAYS_AHEAD)):
     dow = day.day
     return dow
 
-def get_tee_time_ready(TEE_TIME):
-    hr = TEE_TIME.strip(":")
+def get_correct_tee_time(TEE_TIME):
+    time = TEE_TIME
+    hr = time.split(":")
+    mins = hr[1].split(" ")
+    hour, minutes, tod = hr[0], mins[0], mins[1]
+    return hour, minutes, tod
 
+H, M, ToD = get_correct_tee_time(TEE_TIME)
 
 # This should be 7 but can bee changed if needed in the config.ini file
 dow = schedule_tee_time_number_of_days_ahead()
@@ -40,7 +45,7 @@ class ForeTeesLocators:
 
     TEE_TIME_LINKS = (By.XPATH, "//div[@id='rwdNav']//ul//li[@class='topnav_item ']//a[@href='#']//span[@class='topnav_item'][normalize-space()='Tee Times']")
     MCV_TEE_TIMES = (By.XPATH, "//div[@id='rwdNav']//ul//li[@class='topnav_item ']//ul//li[@aria-haspopup='false']//a[@href='Member_select']//span[contains(text(),'Make, Change, or View Tee Times')]")
-    TEETIME = (By.XPATH, "//a[normalize-space()='{}']".format(int(TEE_TIME)))
+    TEETIME = (By.XPATH, "//a[normalize-space()='{}:{} {}']".format(H, M, ToD))
     CALENDAR = (By.XPATH, "(//a[normalize-space()='{}'])[1]".format(dow))
     PARTNER2 = (By.XPATH, "(//a[normalize-space()='Select Player #2'])[1]")
     PARTNER3 = (By.XPATH, "(//a[normalize-space()='Select Player #3'])[1]")
@@ -103,7 +108,7 @@ class ForeTees:
         """This method picks the tee time"""
         time = ForeTeesLocators.TEETIME
         element = WebDriverWait(driver, wait).until(EC.presence_of_element_located(time))
-        print(element)
+        print(time)
         element.click()
 
 
