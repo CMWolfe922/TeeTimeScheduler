@@ -27,6 +27,9 @@ def schedule_tee_time_number_of_days_ahead(number_of_days=int(DAYS_AHEAD)):
     dow = day.day
     return dow
 
+def get_tee_time_ready(TEE_TIME):
+    hr = TEE_TIME.strip(":")
+
 
 # This should be 7 but can bee changed if needed in the config.ini file
 dow = schedule_tee_time_number_of_days_ahead()
